@@ -30,6 +30,24 @@
     ul {
       width: 500px;
       margin: 2em auto;
+      list-style: none;
+      background: white;
+      padding: 25px 30px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-box-shadow: 0px 0px 101px -14px rgba(255,255,255,1);
+      -moz-box-shadow: 0px 0px 101px -14px rgba(255,255,255,1);
+      box-shadow: 0px 0px 101px -14px rgba(255,255,255,1);
+    }
+
+    li {
+      line-height: 26px;
+      color: black;
+    }
+
+    li > span {
+      float: right;
     }
 
     a {
@@ -64,6 +82,14 @@
     .error {
       color: #a00;
     }
+
+    .favicon {
+      background: white;
+      padding: 5px;
+      float: left;
+      margin-right: 15px;
+    }
+
   </style>
   <script>
     function cleanup(func, el, delayCleanup) {
@@ -85,6 +111,8 @@
         img.className = "hidden";
         document.body.appendChild(img);
         img.src = url;
+
+        return url;
       };
     }
     
@@ -121,6 +149,8 @@
         if (fakeOk) {
           success();
         }
+
+        return url;
       };
     }
     
@@ -141,8 +171,24 @@
           }
         };
         one(oneSuccessFunc, error);
-        two(twoSuccessFunc, error);
+        return two(twoSuccessFunc, error);
       }
+    }
+
+    function extractDomain(url) {
+      var domain;
+      //find & remove protocol (http, ftp, etc.) and get domain
+      if (url.indexOf("://") > -1) {
+        domain = url.split('/')[2];
+      }
+      else {
+        domain = url.split('/')[0];
+      }
+
+      //find & remove port number
+      domain = domain.split(':')[0];
+
+      return domain;
     }
     
     function doSites(list, sites) {
@@ -155,12 +201,14 @@
         var action = site[1];
         
         var li = document.createElement("li");
+        var faviconNode = document.createElement("img");
+        faviconNode.className = "favicon";
         var nameNode = document.createElement("strong");
         nameNode.appendChild(document.createTextNode(name));
         var statusNode = document.createElement("span");
         statusNode.innerHTML = "...";
+        li.appendChild(faviconNode);
         li.appendChild(nameNode);
-        li.appendChild(document.createTextNode(': '));
         li.appendChild(statusNode);
         
         var success = function() {
@@ -172,7 +220,8 @@
           statusNode.className = "error";
         };
         
-        action(success, error);
+        var url = action(success, error);
+        faviconNode.src = "https://www.google.com/s2/favicons?domain=" + extractDomain(url);
         
         list.appendChild(li);
       });
