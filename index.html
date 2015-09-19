@@ -107,7 +107,7 @@
       return function(success, error) {
         var img = document.createElement("img");
         img.onload = cleanup(success, img);
-        img.onerror = cleanup(success, img);
+        img.onerror = cleanup(error, img);
         img.className = "hidden";
         document.body.appendChild(img);
         img.src = url;
