@@ -12,13 +12,13 @@
       background: black;
       color: white;
     }
-    
+
     h1 {
       margin: 0 auto;
       text-align: center;
       font-size: 4em;
     }
-    
+
     h3 {
       margin: 0 auto;
       margin-top: 20px;
@@ -64,7 +64,7 @@
       margin: 0 auto;
       background: black;
     }
-  
+
     .hidden {
       position: fixed;
       width: 1px;
@@ -73,12 +73,12 @@
       top: -10px;
       left: -10px;
     }
-    
+
     .success {
       font-weight: bold;
       color: #0a0;
     }
-    
+
     .error {
       color: #a00;
     }
@@ -102,7 +102,7 @@
         el.parentNode.removeChild(el);
       };
     }
-  
+
     function get(url) {
       return function(success, error) {
         var img = document.createElement("img");
@@ -115,7 +115,7 @@
         return url;
       };
     }
-    
+
     var numPostFrames = 0;
     function post(url, params, fakeOk) {
       params = params || {};
@@ -128,11 +128,11 @@
         iframe.onerror = cleanup(cleanup(error, form), iframe, true);
         iframe.name = "iframe" + numPostFrames++;
         document.body.appendChild(iframe);
-        
+
         form.action = url;
         form.method = "POST";
         form.target = iframe.name;
-        
+
         for (var param in params) {
           if (params.hasOwnProperty(param)) {
             var input = document.createElement("input");
@@ -142,10 +142,10 @@
             form.appendChild(input);
           }
         }
-        
+
         document.body.appendChild(form);
         form.submit();
-        
+
         if (fakeOk) {
           success();
         }
@@ -153,7 +153,7 @@
         return url;
       };
     }
-    
+
     function and(one, two) {
       return function(success, error) {
         var oneSuccess = false;
@@ -190,16 +190,16 @@
 
       return domain;
     }
-    
+
     function doSites(list, sites) {
       sites.forEach(function(site) {
         if (!site.length) {
           return;
         }
-        
+
         var name = site[0];
         var action = site[1];
-        
+
         var li = document.createElement("li");
         var faviconNode = document.createElement("img");
         faviconNode.className = "favicon";
@@ -210,7 +210,7 @@
         li.appendChild(faviconNode);
         li.appendChild(nameNode);
         li.appendChild(statusNode);
-        
+
         var success = function() {
           statusNode.innerHTML = "OK";
           statusNode.className = "success";
@@ -219,14 +219,14 @@
           statusNode.innerHTML = "error";
           statusNode.className = "error";
         };
-        
+
         var url = action(success, error);
         faviconNode.src = "https://www.google.com/s2/favicons?domain=" + extractDomain(url);
-        
+
         list.appendChild(li);
       });
     }
-    
+
     window.onload = function() {
       doSites(document.getElementById("sitelist"), [
         ["AOL", and(get("http://my.screenname.aol.com/_cqr/logout/mcLogout.psp?sitedomain=startpage.aol.com&authLev=0&lang=en&locale=us"), get("https://api.screenname.aol.com/auth/logout?state=snslogout&r=" + Math.random()))],
@@ -338,7 +338,7 @@
       </g>
   </svg>
 
-  <h3>Add your company logout page via creating a pull request here: <a href="github.com/superlogout/superlogout.github.io">github.com/superlogout/superlogout.github.io</a></h3>
+  <h3>Add your company logout page via creating a pull request here: <a href="https://github.com/superlogout/superlogout.github.io">github.com/superlogout/superlogout.github.io</a></h3>
   <ul id="sitelist">
   </ul>
 </body>
